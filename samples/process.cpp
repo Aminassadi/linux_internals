@@ -142,7 +142,7 @@ TEST_F(Process, sched_setscheduler_fifo_min)
 
 TEST_F(Process, sched_setscheduler_fifo_max)
 {
-    auto max_sched_priority{sched_get_priority_max(SCHED_FIFO)};
+    auto max_sched_priority{sched_get_priority_max(SCHED_FIFO)};    
     std::cout<<"maximum priority for fifo schedular policy is " << max_sched_priority << '\n';
     const sched_param param{max_sched_priority};
     EXPECT_EQ(sched_setscheduler(0, SCHED_FIFO, &param), 0) << "cannot set the schedular policy with error: " << strerror(errno) << '\n';
@@ -166,6 +166,27 @@ TEST_F(Process, sched_setscheduler_rr_max)
     const sched_param param{max_sched_priority};
     EXPECT_EQ(sched_setscheduler(0, SCHED_RR, &param), 0) << "cannot set the schedular policy with error: " << strerror(errno) << '\n';
     PrintShcedularPolicyForCurrentProcess();
+}
+
+TEST(Affinity, set_cpu_affinity)
+{
+   errno = 0;
+   auto ncpu{sysconf(_SC_NPROCESSORS_ONLN)};
+   ASSERT_FALSE(ncpu == -1) << "cannot retrieve the number of available cpu with error: "<< strerror(errno) << '\n';
+   int cpu{1};
+   cpu_set_t set;
+   CPU_ZERO(&set);
+   CPU_SET(cpu, &set);
+   //replace 0 with desired tid or get the current with gettide()
+   EXPECT_TRUE(sched_setaffinity(0, sizeof(set), &set) == 0);
+}
+
+TEST(Affinity, get_cpu_affinity)
+{
+    cpu_set_t set{};
+    EXPECT_TRUE(sched_getaffinity(0, sizeof(set), &set) == 0);
+    auto c{CPU_COUNT(&set)};
+    std::cout<<"cpu count: " << c << '\n';
 }
 
 
