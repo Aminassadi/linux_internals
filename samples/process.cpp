@@ -68,8 +68,7 @@ protected:
     void TearDown() override 
     {
     }
-
-    
+   
 
     void Reset()
     {
@@ -126,6 +125,10 @@ TEST_F(Process, set_priority_low)
     For processes scheduled under one of the normal scheduling policies (SCHED_OTHER, SCHED_IDLE, SCHED_BATCH), 
     sched_priority is not used in scheduling decisions (it must be specified as 0). 
     setting real-time scheduling policy needs root privileg.
+
+    When you change the scheduler policy to FIFO or RR in Linux, which are real-time scheduling policies, and set a priority for it, 
+    the nice value does not directly affect the scheduling of the process. The nice value is primarily associated with the SCHED_OTHER policy, 
+    which is the default scheduling policy for processes in Linux. 
 */
 
 TEST_F(Process, sched_setscheduler_fifo_min)
