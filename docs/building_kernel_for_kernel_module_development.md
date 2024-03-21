@@ -70,7 +70,7 @@ sudo make modules_install
 sudo make install
 sudo reboot
 ```
-## 7-Signing out modules
+## 7-Signing our modules
 at the end you can sign your kernel modules with:
 ```
 scripts/sign-file sha256 /certs/signing_key.pem /certs/signing_key.509 /path/to/yourmodule.ko
