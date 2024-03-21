@@ -1,8 +1,8 @@
 this document is a prescription for building the linux kernel from scratch for kernel module development.
 Linux kernels check the certificates of kernel modules before loading them into the kernel, cause we do not have a trusty certificate we cannot load our kernel modules. for more information check this: https://www.kernel.org/doc/html/v4.18/admin-guide/module-signing.html
 
-### compiling kernel 
-## 1- download kernel
+### Compiling kernel 
+## 1- Download kernel
 ```
 wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.6.22.tar.xz
 ```
@@ -10,11 +10,11 @@ or
 ```
 $ git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 ```
-## 2- install packages
+## 2- Install packages
 ```
 sudo apt-get install git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc flex libelf-dev bison
 ```
-## 3- config
+## 3- Config
 this step is the most important part, I use my ubuntu config file to config the new kernel.
 copy the existing config file.
 ```
@@ -64,14 +64,14 @@ you can replace *default_x509.genkey* with your self defined file.
 ```
 sudo make
 ```
-## 6- installing
-'''
+## 6- Installing
+```
 sudo make modules_install
 sudo make install
 sudo reboot
 ```
-at the end you can sign your kernel modules with
-for signing your module use:
+## 7-Signing out modules
+at the end you can sign your kernel modules with:
 ```
 scripts/sign-file sha256 /certs/signing_key.pem /certs/signing_key.509 /path/to/yourmodule.ko
 ```
