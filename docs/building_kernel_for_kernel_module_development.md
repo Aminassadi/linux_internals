@@ -10,11 +10,11 @@ or
 ```
 $ git clone git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 ```
-##2- install packages
+## 2- install packages
 ```
 sudo apt-get install git fakeroot build-essential ncurses-dev xz-utils libssl-dev bc flex libelf-dev bison
 ```
-## 2- config
+## 3- config
 this step is the most important part, I use my ubuntu config file to config the new kernel.
 copy the existing config file.
 ```
@@ -45,7 +45,7 @@ CONFIG_SYSTEM_REVOCATION_KEYS=""
 ```
 save it and exit.
 we disable the *canonical-certs* and *canonical-revocation-keys*, the **CONFIG_MODULE_SIG_KEY** part points to the certificates which the kernel is used to sign all modules during the vuild process.
-## 3-Generating our eky
+## 4-Generating our eky
 **you can exit this step and jump to building process, during the building phase it generates a key for you.** 
 ```
 openssl req -new -nodes -utf8 -sha256 -days 36500 -batch -x509 \
