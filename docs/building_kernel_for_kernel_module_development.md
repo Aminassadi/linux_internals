@@ -44,12 +44,36 @@ CONFIG_SYSTEM_REVOCATION_KEYS=""
 # end of Certificates for signature checking
 ```
 save it and exit.
-we disable the *canonical-certs* and *canonical-revocation-keys*, the **CONFIG_MODULE_SIG_KEY** part points to the certificates which the kernel is used to sign all modules during the vuild process.
-## 4-Generating our eky
-**you can exit this step and jump to building process, during the building phase it generates a key for you.** 
+we disable the *canonical-certs* and *canonical-revoced-cert*, the **CONFIG_MODULE_SIG_KEY** part points to the certificates which the kernel is used to sign all modules during the build process.
+If you want to have canonical certs which contains trusty canonical certs you reach them with:
+```
+sudo mkdir -p /debian
+sudo apt install linux-source
+sudo cp -v /usr/src/linux-source-*/debian/canonical-*.pem debian/
+sudo apt purge linux-source*
+```
+## 4-Generating our key
+**you can exit this step and jump to building, during the building phase it generates a key for you.** 
 ```
 openssl req -new -nodes -utf8 -sha256 -days 36500 -batch -x509 \
    -config certs/default_x509.genkey -outform PEM -out certs/signing_key.pem \
    -keyout certs/signing_key.pem
 ```
 you can replace *default_x509.genkey* with your self defined file.  
+## 5-Compiling
+```
+sudo make
+```
+## 6- installing
+'''
+sudo make modules_install
+sudo make install
+sudo reboot
+```
+at the end you can sign your kernel modules with
+for signing your module use:
+```
+scripts/sign-file sha256 /certs/signing_key.pem /certs/signing_key.509 /path/to/yourmodule.ko
+```
+finaly you are able to load it.
+
